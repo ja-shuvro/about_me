@@ -1,28 +1,23 @@
-import { Button, Container, Title, Text, Group } from '@mantine/core';
-import { useState } from 'react';
+import { AppShell } from '@mantine/core';
+import { Header } from './components/layout/Header';
+import { Hero } from './components/sections/Hero';
+import { About } from './components/sections/About';
+import { Skills } from './components/sections/Skills';
+import { Projects } from './components/sections/Projects';
+import { Contact } from './components/sections/Contact';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <Container size="sm" mt="xl">
-      <Title order={1} mb="md">Welcome to Mantine!</Title>
-      <Text mb="xl">
-        This is a basic example to verify that Mantine is correctly installed and configured.
-      </Text>
-      <Group mb="lg">
-        <Button variant="filled" color="blue" onClick={() => setCount(c => c + 1)}>
-          Count is {count}
-        </Button>
-        <Button variant="outline" color="red" onClick={() => setCount(0)}>
-          Reset
-        </Button>
-      </Group>
-
-      <Text size="sm" c="dimmed">
-        Edit src/App.tsx to start building your app.
-      </Text>
-    </Container>
+    <AppShell>
+      <Header />
+      <AppShell.Main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </AppShell.Main>
+    </AppShell>
   );
 }
 
