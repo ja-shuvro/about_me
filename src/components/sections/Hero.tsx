@@ -68,7 +68,7 @@ export function Hero() {
                         fw={700}
                         style={{ letterSpacing: 2, textTransform: 'uppercase' }}
                     >
-                        Creative Developer
+                        Flutter & Full-Stack Developer
                     </Text>
                 </motion.div>
 
@@ -85,8 +85,8 @@ export function Hero() {
                             lineHeight: 1.1,
                         }}
                     >
-                        Building digital <br />
-                        <Text component="span" inherit variant="gradient" gradient={{ from: 'cyan', to: 'blue' }}>experiences</Text> that matter.
+                        Crafting <Text component="span" inherit variant="gradient" gradient={{ from: 'cyan', to: 'blue' }}>Digital Excellence</Text> <br />
+                        for the Future.
                     </Title>
                 </motion.div>
 
@@ -96,7 +96,8 @@ export function Hero() {
                     transition={{ duration: 0.8, delay: 0.6 }}
                 >
                     <Text c="dimmed" mt="xl" size="xl" maw={600}>
-                        I craft accessible, high-performance web applications with a focus on premium aesthetics and fluid interactions.
+                        Experienced Flutter & Full-Stack Developer with a strong self-learning background and real-world production experience.
+                        Skilled in building mobile and web applications using Flutter, Laravel, React, Express.js, and Next.js.
                     </Text>
                 </motion.div>
 

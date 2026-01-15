@@ -2,9 +2,10 @@ import { Container, Title, Text, Box, Badge, Group } from '@mantine/core';
 import { motion } from 'framer-motion';
 
 const skills = [
-    "React", "TypeScript", "Next.js", "Node.js", "GraphQL",
-    "Tailwind CSS", "Mantine UI", "Framer Motion", "PostgreSQL",
-    "Docker", "AWS", "Git", "Figma", "UI/UX Design"
+    "Flutter", "React.js", "Next.js", "Tailwind CSS", "HTML5", "CSS3",
+    "Laravel", "Express.js", "NestJS", "REST API Development",
+    "MongoDB", "MySQL", "Prisma", "Sequelize", "Mongoose",
+    "WordPress Development", "Git", "GitHub"
 ];
 
 export function Skills() {

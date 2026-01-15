@@ -6,8 +6,9 @@ import { motion, useScroll } from 'framer-motion';
 const links = [
     { link: '#hero', label: 'Home' },
     { link: '#about', label: 'About' },
-    { link: '#skills', label: 'Skills' },
+    { link: '#skills', label: 'Expertise' },
     { link: '#projects', label: 'Projects' },
+    { link: '#experience', label: 'Journey' },
     { link: '#contact', label: 'Contact' },
 ];
 
@@ -74,7 +75,7 @@ export function Header() {
                         gradient={{ from: 'blue', to: 'cyan' }}
                         style={{ fontFamily: 'Inter, sans-serif' }}
                     >
-                        PORTFOLIO
+                        JA.Shuvro
                     </Text>
 
                     <Group gap={20} visibleFrom="sm">

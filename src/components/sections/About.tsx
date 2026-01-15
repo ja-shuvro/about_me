@@ -34,9 +34,9 @@ export function About() {
                         About Me
                     </Title>
                     <Text c="dimmed" ta="center" size="lg" maw={800} mx="auto" mb={60}>
-                        I am a passionate software engineer with a strong foundation in modern web technologies.
-                        I thrive on solving complex problems and creating digital solutions that make a difference.
-                        With a keen eye for design and a commitment to code quality, I bring ideas to life.
+                        I am a dedicated software engineer with a track record of delivering robust applications.
+                        From crafting pixel-perfect mobile interfaces with Flutter to architecting scalable backend systems with Laravel and Node.js,
+                        I bridge the gap between complex requirements and elegant solutions.
                     </Text>
                 </motion.div>
 

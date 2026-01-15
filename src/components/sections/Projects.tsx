@@ -10,36 +10,57 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+// Import images
+import flirtmetricsImg from '../../assets/flirtmetrics.png';
+import smartproptraderImg from '../../assets/smartproptrader.png';
+import studentsquareImg from '../../assets/studentsquare.png';
+import rentsalebdImg from '../../assets/rentsalebd.png';
+import mcneilImg from '../../assets/mcneilpstateplanning.png';
+import weeklysuccessImg from '../../assets/weeklysuccess.png';
+import foodshahiImg from '../../assets/foodshahibd.png';
+
 const projects = [
     {
-        title: 'E-commerce Platform',
-        description: 'A full-featured e-commerce platform built with Next.js, Stripe, and Supabase. Includes real-time inventory and admin dashboard.',
-        image: 'https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-        tags: ['Next.js', 'Stripe', 'Supabase'],
+        title: 'Flirtmetrics',
+        description: 'A cross-platform dating application with real-time chat functionality.',
+        image: flirtmetricsImg,
+        tags: ['Flutter', 'Riverpod', 'Real-time Chat'],
     },
     {
-        title: 'Task Management App',
-        description: 'Collaborative task management tool with real-time updates, drag-and-drop interface, and team workspaces.',
-        image: 'https://images.unsplash.com/photo-1540350394557-8d14678e7f91?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-        tags: ['React', 'Redux', 'Node.js'],
+        title: 'Smart Prop Trader',
+        description: 'A comprehensive trading platform for property traders.',
+        image: smartproptraderImg,
+        tags: ['NextJS', 'NodeJS', 'MongoDB'],
     },
     {
-        title: 'AI Content Generator',
-        description: 'SaaS application that uses OpenAI API to generate marketing copy and blog posts. Features rich text editor and SEO analysis.',
-        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-        tags: ['OpenAI', 'React', 'Python'],
+        title: 'Student Square',
+        description: 'An educational management platform for students and teachers.',
+        image: studentsquareImg,
+        tags: ['ExpressJS', 'React', 'MySQL', 'HTML5', 'SASS'],
     },
     {
-        title: 'Crypto Dashboard',
-        description: 'Real-time cryptocurrency tracking dashboard with interactive charts, portfolio management, and market news aggregation.',
-        image: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-        tags: ['React', 'Recharts', 'CoinGecko API'],
+        title: 'Rent Sale BD',
+        description: 'A property rental and sales marketplace for Bangladesh.',
+        image: rentsalebdImg,
+        tags: ['ExpressJS', 'MySQL', 'HTML5', 'SASS'],
     },
     {
-        title: 'Modern Social Network',
-        description: 'A decentralized social networking platform focused on privacy and user data ownership. Built with Web3 technologies.',
-        image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
-        tags: ['Web3', 'Solidity', 'IPFS'],
+        title: 'Mcneil Estate Planning',
+        description: 'Professional estate planning website.',
+        image: mcneilImg,
+        tags: ['WordPress', 'Elementor', 'Astra'],
+    },
+    {
+        title: 'Weekly Success',
+        description: 'A motivational and success-oriented blog platform.',
+        image: weeklysuccessImg,
+        tags: ['WordPress', 'Elementor', 'Astra'],
+    },
+    {
+        title: 'Foodshahi BD',
+        description: 'Online food delivery service platform.',
+        image: foodshahiImg,
+        tags: ['HTML5', 'Tailwind CSS'],
     },
 ];
 
