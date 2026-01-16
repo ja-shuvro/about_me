@@ -1,9 +1,10 @@
-import { Container, Title, Text, Button, Group, Box, useMantineTheme } from '@mantine/core';
+import { Container, Title, Text, Button, Group, Box, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { IconArrowRight } from '@tabler/icons-react';
 
 export function Hero() {
     const theme = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
 
     return (
         <Box
@@ -33,9 +34,9 @@ export function Hero() {
                             alignItems: 'center',
                             gap: '8px',
                             padding: '8px 16px',
-                            background: 'rgba(47, 158, 68, 0.1)',
+                            background: colorScheme === 'dark' ? 'rgba(47, 158, 68, 0.1)' : 'rgba(47, 158, 68, 0.05)',
                             borderRadius: '50px',
-                            border: '1px solid rgba(47, 158, 68, 0.2)',
+                            border: colorScheme === 'dark' ? '1px solid rgba(47, 158, 68, 0.2)' : '1px solid rgba(47, 158, 68, 0.1)',
                             backdropFilter: 'blur(5px)',
                         }}
                     >
@@ -56,10 +57,10 @@ export function Hero() {
                                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                                 style={{
                                     width: '100%',
-                                    height: '100%',
-                                    borderRadius: '50%',
-                                    background: '#40c057',
-                                    position: 'absolute',
+                                    background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+                                    borderRadius: '16px',
+                                    border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0, 0, 0, 0.05)',
+                                    backdropFilter: 'blur(10px)',
                                     top: 0,
                                     left: 0,
                                 }}
@@ -80,9 +81,9 @@ export function Hero() {
                         style={{
                             display: 'inline-block',
                             padding: '8px 16px',
-                            background: 'rgba(255, 255, 255, 0.05)',
+                            background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)',
                             borderRadius: '50px',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
                             backdropFilter: 'blur(10px)',
                             marginBottom: '20px',
                         }}
@@ -170,6 +171,7 @@ export function Hero() {
                             style={{
                                 boxShadow: '0 0 20px var(--mantine-primary-color-filled)', // Glow effect
                                 transition: 'transform 0.2s',
+                                color: colorScheme === 'dark' ? 'white' : 'gray',
                             }}
                         // Add hover scale in styles or CSS if needed, Mantine handles some
                         >
@@ -184,7 +186,7 @@ export function Hero() {
                             href="#contact"
                             style={{
                                 backdropFilter: 'blur(10px)',
-                                background: 'rgba(255,255,255,0.01)'
+                                background: colorScheme === 'dark' ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.02)'
                             }}
                         >
                             Contact Me

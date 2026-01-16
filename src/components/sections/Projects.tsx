@@ -1,4 +1,4 @@
-import { Container, Title, Text, Card, Image, Group, Badge, Button, Box, ActionIcon, useMantineTheme } from '@mantine/core';
+import { Container, Title, Text, Card, Image, Group, Badge, Button, Box, ActionIcon, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { IconArrowRight, IconArrowLeft, IconDeviceLaptop, IconBrandGithub } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -85,29 +85,33 @@ const projects = [
 ];
 
 const ProjectCard = ({ project, index }: { project: any, index: number }) => {
+    const { colorScheme } = useMantineColorScheme();
+    const theme = useMantineTheme();
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
             style={{ height: '100%' }}
         >
             <Card
+                withBorder
                 padding="xl"
                 radius="lg"
                 className="project-card"
                 style={{
-                    background: 'rgba(255, 255, 255, 0.03)',
+                    background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.05)',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     transition: 'transform 0.3s ease, border-color 0.3s ease',
                 }}
             >
-                <Box mb="md" style={{ overflow: 'hidden', borderRadius: '8px', position: 'relative' }}>
+                <Card.Section mb="md" style={{ overflow: 'hidden', position: 'relative' }}>
                     <Image
                         src={project.image}
                         height={200}
@@ -116,15 +120,11 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
                         style={{ transition: 'transform 0.5s ease', objectFit: 'cover' }}
                         className="project-image"
                     />
-                </Box>
+                </Card.Section>
 
                 <Group justify="space-between" mb="xs">
-                    <Text fw={700} size="xl" className="project-title" truncate>
-                        {project.title}
-                    </Text>
-                    <Badge color="primary" variant="light">
-                        {project.category}
-                    </Badge>
+                    <Text fw={700} size="xl" className="project-title" truncate>{project.title}</Text>
+                    <Badge variant="light" color={theme.primaryColor}>{project.category}</Badge>
                 </Group>
 
                 <Text size="sm" c="dimmed" mb="lg" style={{ flex: 1 }} lineClamp={3}>
@@ -144,8 +144,8 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
                         component="a"
                         href={project.demoUrl}
                         target="_blank"
-                        variant="filled"
-                        color="primary"
+                        variant="gradient"
+                        gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}
                         radius="md"
                         leftSection={<IconDeviceLaptop size={16} />}
                         fullWidth
@@ -172,18 +172,20 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
 
 export default function Projects() {
     const theme = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
+
     return (
-        <section id="projects" style={{ padding: '80px 0', position: 'relative' }}>
+        <section id="projects" style={{ padding: '100px 0', position: 'relative' }}>
             <Container size="lg">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{ textAlign: 'center', marginBottom: '50px' }}
+                    style={{ textAlign: 'center', marginBottom: '60px' }}
                 >
                     <Badge
                         variant="filled"
-                        color="primary"
+                        color={theme.primaryColor}
                         size="lg"
                         mb="md"
                     >
@@ -231,9 +233,9 @@ export default function Projects() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                background: 'rgba(255, 255, 255, 0.05)',
+                                background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
                                 backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
                                 borderRadius: '50%',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
@@ -246,7 +248,7 @@ export default function Projects() {
                                 e.currentTarget.style.color = 'white';
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.background = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
                                 e.currentTarget.style.transform = 'scale(1)';
                                 e.currentTarget.style.boxShadow = 'none';
                                 e.currentTarget.style.color = theme.colors[theme.primaryColor][4];
@@ -262,9 +264,9 @@ export default function Projects() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                background: 'rgba(255, 255, 255, 0.05)',
+                                background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
                                 backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
                                 borderRadius: '50%',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
@@ -277,7 +279,7 @@ export default function Projects() {
                                 e.currentTarget.style.color = 'white';
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.background = colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
                                 e.currentTarget.style.transform = 'scale(1)';
                                 e.currentTarget.style.boxShadow = 'none';
                                 e.currentTarget.style.color = theme.colors[theme.primaryColor][4];

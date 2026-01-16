@@ -1,4 +1,4 @@
-import { Container, Title, Text, SimpleGrid, ThemeIcon, Box, useMantineTheme } from '@mantine/core';
+import { Container, Title, Text, SimpleGrid, ThemeIcon, Box, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { IconCode, IconDeviceLaptop, IconServer } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
@@ -22,6 +22,7 @@ const features = [
 
 export function About() {
     const theme = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
     return (
         <Box id="about" py={100} style={{ position: 'relative' }}>
             <Container size="md">
@@ -54,9 +55,9 @@ export function About() {
                                 style={{
                                     textAlign: 'center',
                                     padding: '2rem',
-                                    background: 'rgba(255, 255, 255, 0.03)',
+                                    background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
                                     borderRadius: '16px',
-                                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                                    border: colorScheme === 'dark' ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid rgba(0, 0, 0, 0.05)',
                                     backdropFilter: 'blur(10px)',
                                 }}
                             >
