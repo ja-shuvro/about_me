@@ -2,13 +2,11 @@ import { Container, Title, Text, Card, Image, Group, Badge, Button, Box } from '
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay, Parallax } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 
 // Import images
 import flirtmetricsImg from '../../assets/flirtmetrics.png';
@@ -80,12 +78,13 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
                 boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
             }}
         >
-            <Card.Section mb="sm" style={{ flexShrink: 0 }}>
+            <Card.Section mb="sm" style={{ flexShrink: 0, overflow: 'hidden' }}>
                 <Image
                     src={project.image}
                     alt={project.title}
                     height={200}
                     style={{ objectFit: 'cover' }}
+                    data-swiper-parallax="-20%"
                 />
             </Card.Section>
 
@@ -141,43 +140,39 @@ export function Projects() {
                         '--swiper-navigation-color': 'var(--mantine-color-cyan-5)',
                     } as any}
                 >
+                    <style>{`
+                        .swiper-slide {
+                            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+                            opacity: 0.4;
+                            transform: scale(0.85) perspective(1000px) rotateY(5deg);
+                            filter: blur(4px);
+                        }
+                        .swiper-slide-active {
+                            opacity: 1;
+                            transform: scale(1) perspective(1000px) rotateY(0deg);
+                            filter: blur(0px);
+                            z-index: 10;
+                        }
+                    `}</style>
                     <Swiper
-                        effect={'coverflow'}
                         grabCursor={true}
                         centeredSlides={true}
                         slidesPerView={'auto'}
-                        coverflowEffect={{
-                            rotate: 50,
-                            stretch: 0,
-                            depth: 100,
-                            modifier: 1,
-                            slideShadows: true,
+                        spaceBetween={50}
+                        loop={true}
+                        speed={800}
+                        parallax={true}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
                         }}
                         pagination={{ clickable: true }}
                         navigation={true}
-                        autoplay={{
-                            delay: 2500,
-                            disableOnInteraction: false,
-                        }}
-                        modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+                        modules={[Pagination, Navigation, Autoplay, Parallax]}
                         className="mySwiper"
                         style={{
                             paddingBottom: '50px',
                             paddingTop: '20px',
-                        }}
-                        breakpoints={{
-                            320: {
-                                slidesPerView: 1,
-                                spaceBetween: 20
-                            },
-                            768: {
-                                slidesPerView: 2,
-                                spaceBetween: 30
-                            },
-                            1024: {
-                                slidesPerView: 3,
-                                spaceBetween: 40
-                            }
                         }}
                     >
                         {projects.map((project, index) => (

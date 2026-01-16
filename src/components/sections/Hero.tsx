@@ -7,7 +7,7 @@ export function Hero() {
     return (
         <Box
             id="hero"
-            h="100vh"
+            h="120vh"
             style={{
                 display: 'flex',
                 alignItems: 'center',
