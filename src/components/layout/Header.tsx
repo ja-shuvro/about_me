@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Group, Burger, Paper, Transition, Text, UnstyledButton, Box } from '@mantine/core';
+import { Container, Group, Burger, Paper, Transition, Text, UnstyledButton, Box, Image } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { motion, useScroll } from 'framer-motion';
 
@@ -90,7 +90,7 @@ export function Header() {
             <Transition transition="pop-top-right" duration={200} mounted={opened}>
                 {(styles) => (
                     <Paper
-                        visibleFrom="sm"
+                        hiddenFrom="sm"
                         withBorder
                         style={{ ...styles, position: 'absolute', top: 60, left: 10, right: 10, zIndex: 1000, overflow: 'hidden' }}
                     >

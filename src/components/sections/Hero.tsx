@@ -7,8 +7,9 @@ export function Hero() {
     return (
         <Box
             id="hero"
-            h="120vh"
             style={{
+                minHeight: '100dvh',
+                height: 'auto',
                 display: 'flex',
                 alignItems: 'center',
                 position: 'relative',
@@ -16,7 +17,7 @@ export function Hero() {
                 background: 'transparent',
             }}
         >
-            <Container size="md" style={{ position: 'relative', zIndex: 1, width: '100%', paddingTop: '80px' }}>
+            <Container size="md" style={{ position: 'relative', zIndex: 1, width: '100%', paddingTop: '120px', paddingBottom: '80px' }}>
 
                 {/* Available for Hire Badge */}
                 <motion.div
@@ -106,7 +107,7 @@ export function Hero() {
                         order={1}
                         mt="xs"
                         style={{
-                            fontSize: 'clamp(3.5rem, 6vw, 5.5rem)', // Larger font
+                            fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', // Larger font
                             lineHeight: 1.1,
                             fontWeight: 900,
                             letterSpacing: '-2px',

@@ -1,4 +1,5 @@
 import { Container, Title, Text, Card, Image, Group, Badge, Button, Box } from '@mantine/core';
+import { IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -69,7 +70,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
             radius="md"
             withBorder
             style={{
-                height: '450px', // Fixed height for slider uniformity
+                // height: '400px', // Fixed height for slider uniformity
                 display: 'flex',
                 flexDirection: 'column',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -104,9 +105,22 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
                 {project.description}
             </Text>
 
-            <Button variant="gradient" gradient={{ from: 'blue', to: 'cyan' }} fullWidth mt="auto" radius="md">
+            {/* <Button
+                variant="light"
+                color="cyan"
+                fullWidth
+                mt="auto"
+                radius="md"
+                rightSection={<IconArrowRight size={18} />}
+                style={{
+                    background: 'rgba(34, 184, 207, 0.1)',
+                    border: '1px solid rgba(34, 184, 207, 0.2)',
+                    transition: 'all 0.3s ease',
+                    backdropFilter: 'blur(5px)',
+                }}
+            >
                 View Details
-            </Button>
+            </Button> */}
         </Card>
     )
 }
@@ -167,7 +181,10 @@ export function Projects() {
                             disableOnInteraction: false,
                         }}
                         pagination={{ clickable: true }}
-                        navigation={true}
+                        navigation={{
+                            nextEl: '.custom-swiper-button-next',
+                            prevEl: '.custom-swiper-button-prev',
+                        }}
                         modules={[Pagination, Navigation, Autoplay, Parallax]}
                         className="mySwiper"
                         style={{
@@ -181,6 +198,72 @@ export function Projects() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
+
+                    {/* Custom Navigation Buttons */}
+                    <Group justify="flex-end" mt="xl" gap="md">
+                        <Box
+                            className="custom-swiper-button-prev"
+                            style={{
+                                width: 50,
+                                height: 50,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                borderRadius: '50%',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                color: 'var(--mantine-color-cyan-4)',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(34, 184, 207, 0.2)';
+                                e.currentTarget.style.transform = 'scale(1.1)';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(34, 184, 207, 0.4)';
+                                e.currentTarget.style.color = 'white';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.boxShadow = 'none';
+                                e.currentTarget.style.color = 'var(--mantine-color-cyan-4)';
+                            }}
+                        >
+                            <IconArrowLeft size={24} />
+                        </Box>
+                        <Box
+                            className="custom-swiper-button-next"
+                            style={{
+                                width: 50,
+                                height: 50,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                borderRadius: '50%',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                color: 'var(--mantine-color-cyan-4)',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(34, 184, 207, 0.2)';
+                                e.currentTarget.style.transform = 'scale(1.1)';
+                                e.currentTarget.style.boxShadow = '0 0 20px rgba(34, 184, 207, 0.4)';
+                                e.currentTarget.style.color = 'white';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.boxShadow = 'none';
+                                e.currentTarget.style.color = 'var(--mantine-color-cyan-4)';
+                            }}
+                        >
+                            <IconArrowRight size={24} />
+                        </Box>
+                    </Group>
                 </Box>
             </Container>
         </Box>

@@ -25,8 +25,12 @@ export function Footer() {
                         JA.Shuvro
                     </Text>
 
-                    <Text c="dimmed" size="sm" mb="md" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <Text c="dimmed" size="sm" mb="xs" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                         Designed & Built with <IconHeart size={14} color="var(--mantine-color-red-5)" fill="var(--mantine-color-red-5)" />
+                    </Text>
+
+                    <Text c="dimmed" size="xs" mb="md" ta="center" style={{ maxWidth: '300px' }}>
+                        Powered by React, TypeScript, Vite, Mantine UI, Framer Motion, and Swiper.js
                     </Text>
 
                     <Group gap="lg" mb="lg">
