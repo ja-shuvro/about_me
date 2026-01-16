@@ -1,4 +1,4 @@
-import { Container, Title, Text, SimpleGrid, ThemeIcon, Box } from '@mantine/core';
+import { Container, Title, Text, SimpleGrid, ThemeIcon, Box, useMantineTheme } from '@mantine/core';
 import { IconCode, IconDeviceLaptop, IconServer } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 
@@ -21,6 +21,7 @@ const features = [
 ];
 
 export function About() {
+    const theme = useMantineTheme();
     return (
         <Box id="about" py={100} style={{ position: 'relative' }}>
             <Container size="md">
@@ -63,7 +64,7 @@ export function About() {
                                     size={60}
                                     radius="md"
                                     variant="gradient"
-                                    gradient={{ from: 'blue', to: 'cyan' }}
+                                    gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}
                                     mb="md"
                                 >
                                     <feature.icon size={30} stroke={1.5} />

@@ -1,8 +1,9 @@
-import { Container, Title, Text, TextInput, Textarea, Button, Group, Box, SimpleGrid, ThemeIcon } from '@mantine/core';
+import { Container, Title, Text, TextInput, Textarea, Button, Group, Box, SimpleGrid, ThemeIcon, useMantineTheme } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { IconSend, IconMail, IconPhone, IconMapPin, IconBrandGithub, IconBrandLinkedin, IconBrandWhatsapp, IconBrandTwitter } from '@tabler/icons-react';
 
 export function Contact() {
+    const theme = useMantineTheme();
     return (
         <Box id="contact" py={100} style={{ position: 'relative' }}>
             <Box
@@ -13,7 +14,7 @@ export function Contact() {
                     transform: 'translate(-50%, -50%)',
                     width: '100%',
                     height: '100%',
-                    background: 'radial-gradient(circle, var(--mantine-color-blue-9) 0%, transparent 40%)',
+                    background: `radial-gradient(circle, var(--mantine-color-${theme.primaryColor}-9) 0%, transparent 40%)`,
                     opacity: 0.1,
                     zIndex: 0,
                     pointerEvents: 'none',
@@ -27,7 +28,7 @@ export function Contact() {
                     transition={{ duration: 0.8 }}
                 >
                     <Title order={2} ta="center" mb="md" size="h1">
-                        Let's Build <Text component="span" inherit variant="gradient" gradient={{ from: 'cyan', to: 'blue' }}>Something Great</Text>
+                        Let's Build <Text component="span" inherit variant="gradient" gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}>Something Great</Text>
                     </Title>
                     <Text c="dimmed" ta="center" mb="xl" maw={600} mx="auto">
                         Have a project in mind or just want to say hello? I'd love to hear from you.
@@ -36,7 +37,7 @@ export function Contact() {
                     <SimpleGrid cols={{ base: 1, md: 2 }} spacing={50} mt={50}>
                         <Box>
                             <Group mb="xl">
-                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }}>
+                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}>
                                     <IconMail size={24} />
                                 </ThemeIcon>
                                 <div>
@@ -48,7 +49,7 @@ export function Contact() {
                             </Group>
 
                             <Group mb="xl">
-                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }}>
+                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}>
                                     <IconPhone size={24} />
                                 </ThemeIcon>
                                 <div>
@@ -60,7 +61,7 @@ export function Contact() {
                             </Group>
 
                             <Group mb="xl">
-                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }}>
+                                <ThemeIcon size={50} radius="md" variant="gradient" gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}>
                                     <IconMapPin size={24} />
                                 </ThemeIcon>
                                 <div>
@@ -125,7 +126,7 @@ export function Contact() {
                                     fullWidth
                                     size="lg"
                                     variant="gradient"
-                                    gradient={{ from: 'blue', to: 'cyan' }}
+                                    gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}
                                     rightSection={<IconSend size={18} />}
                                 >
                                     Send Message

@@ -1,8 +1,9 @@
-import { Container, Title, Text, Button, Group, Box } from '@mantine/core';
+import { Container, Title, Text, Button, Group, Box, useMantineTheme } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { IconArrowRight } from '@tabler/icons-react';
 
 export function Hero() {
+    const theme = useMantineTheme();
 
     return (
         <Box
@@ -88,7 +89,7 @@ export function Hero() {
                     >
                         <Text
                             variant="gradient"
-                            gradient={{ from: 'cyan', to: 'white' }}
+                            gradient={{ from: theme.primaryColor, to: 'white' }}
                             fw={700}
                             size="sm"
                             style={{ letterSpacing: 1, textTransform: 'uppercase' }}
@@ -118,7 +119,7 @@ export function Hero() {
                             component="span"
                             inherit
                             variant="gradient"
-                            gradient={{ from: 'cyan', to: 'blue' }}
+                            gradient={{ from: `${theme.primaryColor}.4`, to: `${theme.primaryColor}.7` }}
                             style={{ position: 'relative', display: 'inline-block' }}
                         >
                             Digital Excellence
@@ -130,7 +131,7 @@ export function Hero() {
                                     left: 0,
                                     width: '100%',
                                     height: '20px',
-                                    background: 'var(--mantine-color-cyan-5)',
+                                    background: `var(--mantine-color-${theme.primaryColor}-5)`,
                                     filter: 'blur(20px)',
                                     opacity: 0.3,
                                     zIndex: -1,
@@ -162,12 +163,12 @@ export function Hero() {
                             size="xl"
                             radius="md"
                             variant="filled"
-                            color="cyan" // Use solid distinct color
+                            color="primary" // Use primary color
                             rightSection={<IconArrowRight size={20} />}
                             component="a"
                             href="#projects"
                             style={{
-                                boxShadow: '0 0 20px rgba(21, 170, 191, 0.4)', // Glow effect
+                                boxShadow: '0 0 20px var(--mantine-primary-color-filled)', // Glow effect
                                 transition: 'transform 0.2s',
                             }}
                         // Add hover scale in styles or CSS if needed, Mantine handles some

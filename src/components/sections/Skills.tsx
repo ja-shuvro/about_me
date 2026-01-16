@@ -1,4 +1,4 @@
-import { Container, Title, Text, Box, Badge, Group } from '@mantine/core';
+import { Container, Title, Text, Box, Badge, Group, useMantineTheme } from '@mantine/core';
 import { motion } from 'framer-motion';
 
 const skills = [
@@ -9,6 +9,7 @@ const skills = [
 ];
 
 export function Skills() {
+    const theme = useMantineTheme();
     return (
         <Box id="skills" py={100} style={{ overflow: 'hidden' }}>
             <Container size="md">
@@ -37,7 +38,11 @@ export function Skills() {
                             <Badge
                                 size="xl"
                                 variant="gradient"
-                                gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+                                gradient={{
+                                    from: `${theme.primaryColor}.4`,
+                                    to: `${theme.primaryColor}.7`,
+                                    deg: 90
+                                }}
                                 style={{
                                     textTransform: 'none',
                                     fontSize: '1rem',

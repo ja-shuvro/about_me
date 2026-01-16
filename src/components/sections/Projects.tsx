@@ -1,13 +1,13 @@
-import { Container, Title, Text, Card, Image, Group, Badge, Button, Box } from '@mantine/core';
-import { IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
+import { Container, Title, Text, Card, Image, Group, Badge, Button, Box, ActionIcon, useMantineTheme } from '@mantine/core';
+import { IconArrowRight, IconArrowLeft, IconDeviceLaptop, IconBrandGithub } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay, Parallax } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 // Import images
 import flirtmetricsImg from '../../assets/flirtmetrics.png';
@@ -24,182 +24,204 @@ const projects = [
         description: 'A cross-platform dating application with real-time chat functionality.',
         image: flirtmetricsImg,
         tags: ['Flutter', 'Riverpod', 'Real-time Chat'],
+        category: 'Mobile App',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Smart Prop Trader',
-        description: 'A comprehensive trading platform for property traders.',
+        description: 'A comprehensive trading platform for property traders. Built with modern web technologies.',
         image: smartproptraderImg,
         tags: ['NextJS', 'NodeJS', 'MongoDB'],
+        category: 'Web App',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Student Square',
-        description: 'An educational management platform for students and teachers.',
+        description: 'An educational management platform for students and teachers in Bangladesh.',
         image: studentsquareImg,
-        tags: ['ExpressJS', 'React', 'MySQL', 'HTML5', 'SASS'],
+        tags: ['ExpressJS', 'React', 'MySQL'],
+        category: 'Web Platform',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Rent Sale BD',
         description: 'A property rental and sales marketplace for Bangladesh.',
         image: rentsalebdImg,
-        tags: ['ExpressJS', 'MySQL', 'HTML5', 'SASS'],
+        tags: ['ExpressJS', 'MySQL', 'HTML5'],
+        category: 'Web App',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Mcneil Estate Planning',
-        description: 'Professional estate planning website.',
+        description: 'Professional estate planning website for clients.',
         image: mcneilImg,
         tags: ['WordPress', 'Elementor', 'Astra'],
+        category: 'WordPress',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Weekly Success',
         description: 'A motivational and success-oriented blog platform.',
         image: weeklysuccessImg,
         tags: ['WordPress', 'Elementor', 'Astra'],
+        category: 'Blog',
+        demoUrl: '#',
+        githubUrl: '#',
     },
     {
         title: 'Foodshahi BD',
         description: 'Online food delivery service platform.',
         image: foodshahiImg,
         tags: ['HTML5', 'Tailwind CSS'],
+        category: 'Web App',
+        demoUrl: '#',
+        githubUrl: '#',
     },
 ];
 
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+const ProjectCard = ({ project, index }: { project: any, index: number }) => {
     return (
-        <Card
-            padding="lg"
-            radius="md"
-            withBorder
-            style={{
-                // height: '400px', // Fixed height for slider uniformity
-                display: 'flex',
-                flexDirection: 'column',
-                background: 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-            }}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            style={{ height: '100%' }}
         >
-            <Card.Section mb="sm" style={{ flexShrink: 0, overflow: 'hidden' }}>
-                <Image
-                    src={project.image}
-                    alt={project.title}
-                    height={200}
-                    style={{ objectFit: 'cover' }}
-                    data-swiper-parallax="-20%"
-                />
-            </Card.Section>
-
-            <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={700} fz="xl" truncate>{project.title}</Text>
-            </Group>
-
-            <Group gap={5} mb="md">
-                {project.tags.map(tag => (
-                    <Badge key={tag} variant="light" color="cyan">
-                        {tag}
-                    </Badge>
-                ))}
-            </Group>
-
-            <Text size="sm" c="dimmed" mb="lg" lineClamp={3} style={{ flexGrow: 1 }}>
-                {project.description}
-            </Text>
-
-            {/* <Button
-                variant="light"
-                color="cyan"
-                fullWidth
-                mt="auto"
-                radius="md"
-                rightSection={<IconArrowRight size={18} />}
+            <Card
+                padding="xl"
+                radius="lg"
+                className="project-card"
                 style={{
-                    background: 'rgba(34, 184, 207, 0.1)',
-                    border: '1px solid rgba(34, 184, 207, 0.2)',
-                    transition: 'all 0.3s ease',
-                    backdropFilter: 'blur(5px)',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'transform 0.3s ease, border-color 0.3s ease',
                 }}
             >
-                View Details
-            </Button> */}
-        </Card>
-    )
-}
+                <Box mb="md" style={{ overflow: 'hidden', borderRadius: '8px', position: 'relative' }}>
+                    <Image
+                        src={project.image}
+                        height={200}
+                        alt={project.title}
+                        fallbackSrc="https://placehold.co/600x400?text=Project+Preview"
+                        style={{ transition: 'transform 0.5s ease', objectFit: 'cover' }}
+                        className="project-image"
+                    />
+                </Box>
 
-export function Projects() {
-    const ref = useRef(null);
+                <Group justify="space-between" mb="xs">
+                    <Text fw={700} size="xl" className="project-title" truncate>
+                        {project.title}
+                    </Text>
+                    <Badge color="primary" variant="light">
+                        {project.category}
+                    </Badge>
+                </Group>
 
+                <Text size="sm" c="dimmed" mb="lg" style={{ flex: 1 }} lineClamp={3}>
+                    {project.description}
+                </Text>
+
+                <Group gap="xs" mb="xl">
+                    {project.tags.map((tag: string) => (
+                        <Badge key={tag} variant="outline" color="gray" size="xs">
+                            {tag}
+                        </Badge>
+                    ))}
+                </Group>
+
+                <Group gap="md" mt="auto">
+                    <Button
+                        component="a"
+                        href={project.demoUrl}
+                        target="_blank"
+                        variant="filled"
+                        color="primary"
+                        radius="md"
+                        leftSection={<IconDeviceLaptop size={16} />}
+                        fullWidth
+                        style={{ flex: 1 }}
+                    >
+                        Live Demo
+                    </Button>
+                    <ActionIcon
+                        component="a"
+                        href={project.githubUrl}
+                        target="_blank"
+                        variant="light"
+                        color="gray"
+                        size="lg"
+                        radius="md"
+                    >
+                        <IconBrandGithub size={20} />
+                    </ActionIcon>
+                </Group>
+            </Card>
+        </motion.div>
+    );
+};
+
+export default function Projects() {
+    const theme = useMantineTheme();
     return (
-        <Box id="projects" py={100} ref={ref} style={{ overflow: "hidden" }}>
+        <section id="projects" style={{ padding: '80px 0', position: 'relative' }}>
             <Container size="lg">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                    style={{ textAlign: 'center', marginBottom: '50px' }}
                 >
-                    <Title order={2} mb={50} ta="center" size="h1">
-                        Featured Work
+                    <Badge
+                        variant="filled"
+                        color="primary"
+                        size="lg"
+                        mb="md"
+                    >
+                        Portfolio
+                    </Badge>
+                    <Title order={2} size="h1" fw={900} mb="sm">
+                        Featured Projects
                     </Title>
+                    <Text c="dimmed" size="lg" maw={600} mx="auto">
+                        A showcase of my recent work in mobile and web development.
+                    </Text>
                 </motion.div>
 
-                <Box
-                    style={{
-                        padding: '20px 0',
-                        // Custom styles for Swiper pagination
-                        '--swiper-pagination-color': 'var(--mantine-color-cyan-5)',
-                        '--swiper-pagination-bullet-inactive-color': 'var(--mantine-color-dimmed)',
-                        '--swiper-pagination-bullet-inactive-opacity': '0.5',
-                        '--swiper-pagination-bullet-size': '10px',
-                        '--swiper-pagination-bullet-horizontal-gap': '6px',
-                        '--swiper-navigation-color': 'var(--mantine-color-cyan-5)',
-                    } as any}
-                >
-                    <style>{`
-                        .swiper-slide {
-                            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-                            opacity: 0.4;
-                            transform: scale(0.85) perspective(1000px) rotateY(5deg);
-                            filter: blur(4px);
-                        }
-                        .swiper-slide-active {
-                            opacity: 1;
-                            transform: scale(1) perspective(1000px) rotateY(0deg);
-                            filter: blur(0px);
-                            z-index: 10;
-                        }
-                    `}</style>
+                <Box style={{ position: 'relative' }}>
                     <Swiper
-                        grabCursor={true}
-                        centeredSlides={true}
-                        slidesPerView={'auto'}
-                        spaceBetween={50}
-                        loop={true}
-                        speed={800}
-                        parallax={true}
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
+                        modules={[Navigation, Pagination, Autoplay]}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        navigation={{
+                            prevEl: '.custom-swiper-button-prev',
+                            nextEl: '.custom-swiper-button-next',
                         }}
                         pagination={{ clickable: true }}
-                        navigation={{
-                            nextEl: '.custom-swiper-button-next',
-                            prevEl: '.custom-swiper-button-prev',
+                        autoplay={{ delay: 5000, disableOnInteraction: false }}
+                        breakpoints={{
+                            640: { slidesPerView: 1 },
+                            768: { slidesPerView: 2 },
+                            1024: { slidesPerView: 3 },
                         }}
-                        modules={[Pagination, Navigation, Autoplay, Parallax]}
-                        className="mySwiper"
-                        style={{
-                            paddingBottom: '50px',
-                            paddingTop: '20px',
-                        }}
+                        className="projects-swiper"
                     >
                         {projects.map((project, index) => (
-                            <SwiperSlide key={index} style={{ width: '350px', height: 'auto' }}>
-                                <ProjectCard project={project} />
+                            <SwiperSlide key={index}>
+                                <ProjectCard project={project} index={index} />
                             </SwiperSlide>
                         ))}
                     </Swiper>
 
-                    {/* Custom Navigation Buttons */}
                     <Group justify="flex-end" mt="xl" gap="md">
                         <Box
                             className="custom-swiper-button-prev"
@@ -215,19 +237,19 @@ export function Projects() {
                                 borderRadius: '50%',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
-                                color: 'var(--mantine-color-cyan-4)',
+                                color: theme.colors[theme.primaryColor][4],
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(34, 184, 207, 0.2)';
+                                e.currentTarget.style.background = theme.colors[theme.primaryColor][6];
                                 e.currentTarget.style.transform = 'scale(1.1)';
-                                e.currentTarget.style.boxShadow = '0 0 20px rgba(34, 184, 207, 0.4)';
+                                e.currentTarget.style.boxShadow = `0 0 20px ${theme.colors[theme.primaryColor][6]}80`;
                                 e.currentTarget.style.color = 'white';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                                 e.currentTarget.style.transform = 'scale(1)';
                                 e.currentTarget.style.boxShadow = 'none';
-                                e.currentTarget.style.color = 'var(--mantine-color-cyan-4)';
+                                e.currentTarget.style.color = theme.colors[theme.primaryColor][4];
                             }}
                         >
                             <IconArrowLeft size={24} />
@@ -246,19 +268,19 @@ export function Projects() {
                                 borderRadius: '50%',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
-                                color: 'var(--mantine-color-cyan-4)',
+                                color: theme.colors[theme.primaryColor][4],
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'rgba(34, 184, 207, 0.2)';
+                                e.currentTarget.style.background = theme.colors[theme.primaryColor][6];
                                 e.currentTarget.style.transform = 'scale(1.1)';
-                                e.currentTarget.style.boxShadow = '0 0 20px rgba(34, 184, 207, 0.4)';
+                                e.currentTarget.style.boxShadow = `0 0 20px ${theme.colors[theme.primaryColor][6]}80`;
                                 e.currentTarget.style.color = 'white';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                                 e.currentTarget.style.transform = 'scale(1)';
                                 e.currentTarget.style.boxShadow = 'none';
-                                e.currentTarget.style.color = 'var(--mantine-color-cyan-4)';
+                                e.currentTarget.style.color = theme.colors[theme.primaryColor][4];
                             }}
                         >
                             <IconArrowRight size={24} />
@@ -266,6 +288,18 @@ export function Projects() {
                     </Group>
                 </Box>
             </Container>
-        </Box>
+
+            <style>{`
+                .projects-swiper {
+                    padding-bottom: 50px !important;
+                }
+                .project-card:hover .project-image {
+                    transform: scale(1.1);
+                }
+                .swiper-pagination-bullet-active {
+                    background: var(--mantine-primary-color-filled) !important;
+                }
+            `}</style>
+        </section>
     );
 }

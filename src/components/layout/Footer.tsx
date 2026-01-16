@@ -1,7 +1,8 @@
-import { Container, Group, Text, ActionIcon, Box } from '@mantine/core';
+import { Container, Group, Text, ActionIcon, Box, useMantineTheme } from '@mantine/core';
 import { IconBrandGithub, IconBrandLinkedin, IconBrandWhatsapp, IconBrandTwitter, IconHeart } from '@tabler/icons-react';
 
 export function Footer() {
+    const theme = useMantineTheme();
     return (
         <Box
             component="footer"
@@ -18,7 +19,7 @@ export function Footer() {
                         fw={900}
                         size="xl"
                         variant="gradient"
-                        gradient={{ from: 'blue', to: 'cyan' }}
+                        gradient={{ from: `${theme.primaryColor}.5`, to: `${theme.primaryColor}.8` }}
                         style={{ fontFamily: 'Inter, sans-serif' }}
                         mb="xs"
                     >

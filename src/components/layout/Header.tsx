@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Container, Group, Burger, Paper, Transition, Text, UnstyledButton, Box, Image } from '@mantine/core';
+import { Container, Group, Burger, Paper, Transition, Text, UnstyledButton, Box, Image, ActionIcon, useMantineColorScheme, useMantineTheme, Menu, ColorSwatch, CheckIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { motion, useScroll } from 'framer-motion';
+import { IconSun, IconMoon, IconPalette } from '@tabler/icons-react';
 
 const links = [
     { link: '#hero', label: 'Home' },
@@ -12,7 +13,21 @@ const links = [
     { link: '#contact', label: 'Contact' },
 ];
 
-export function Header() {
+const colors = [
+    { label: 'Cyan', color: 'brand', value: '#23bcfe' },
+    { label: 'Purple', color: 'violet', value: '#7d5eff' },
+    { label: 'Rose', color: 'rose', value: '#ff5585' },
+    { label: 'Amber', color: 'amber', value: '#ffb500' },
+];
+
+interface HeaderProps {
+    onColorChange: (color: string) => void;
+    activeColor: string;
+}
+
+export function Header({ onColorChange, activeColor }: HeaderProps) {
+    const { colorScheme, setColorScheme } = useMantineColorScheme();
+    const theme = useMantineTheme();
     const [opened, { toggle, close }] = useDisclosure(false);
     const { scrollY } = useScroll();
     const [isScrolled, setIsScrolled] = useState(false);
@@ -61,7 +76,9 @@ export function Header() {
                 zIndex: 1000,
                 height: 60,
                 transition: 'all 0.3s ease',
-                background: isScrolled ? 'rgba(26, 27, 30, 0.8)' : 'transparent',
+                background: isScrolled
+                    ? (colorScheme === 'dark' ? 'rgba(26, 27, 30, 0.8)' : 'rgba(255, 255, 255, 0.8)')
+                    : 'transparent',
                 backdropFilter: isScrolled ? 'blur(10px)' : 'none',
                 // borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
             }}
@@ -72,7 +89,7 @@ export function Header() {
                         fw={900}
                         size="xl"
                         variant="gradient"
-                        gradient={{ from: 'blue', to: 'cyan' }}
+                        gradient={{ from: `${theme.primaryColor}.5`, to: `${theme.primaryColor}.8` }}
                         style={{ fontFamily: 'Inter, sans-serif' }}
                     >
                         JA.Shuvro
@@ -82,7 +99,43 @@ export function Header() {
                         {items}
                     </Group>
 
-                    <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                    <Group gap="sm">
+                        {/* Theme Controls */}
+                        <Menu shadow="md" width={200} position="bottom-end">
+                            <Menu.Target>
+                                <ActionIcon variant="subtle" color="gray" size="lg">
+                                    <IconPalette size={20} />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Label>Accent Color</Menu.Label>
+                                <Group gap="xs" p="xs">
+                                    {colors.map((c) => (
+                                        <ColorSwatch
+                                            key={c.color}
+                                            color={c.value}
+                                            onClick={() => onColorChange(c.color)}
+                                            style={{ cursor: 'pointer', color: '#fff' }}
+                                        >
+                                            {activeColor === c.color && <CheckIcon style={{ width: 12, height: 12 }} />}
+                                        </ColorSwatch>
+                                    ))}
+                                </Group>
+                            </Menu.Dropdown>
+                        </Menu>
+
+                        <ActionIcon
+                            variant="subtle"
+                            color="gray"
+                            onClick={() => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')}
+                            title="Toggle color scheme"
+                            size="lg"
+                        >
+                            {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+                        </ActionIcon>
+
+                        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+                    </Group>
                 </Group>
             </Container>
 
@@ -101,7 +154,6 @@ export function Header() {
                                     mb="sm"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        // Custom scroll logic here if needed
                                         const element = document.querySelector(link.link);
                                         if (element) element.scrollIntoView({ behavior: 'smooth' });
                                         close();
@@ -111,6 +163,35 @@ export function Header() {
                                     <Text fw={500} size="lg">{link.label}</Text>
                                 </UnstyledButton>
                             ))}
+
+                            <Box mt="xl" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '15px' }}>
+                                <Text size="sm" fw={500} mb="xs">Appearance</Text>
+                                <Group justify="space-between">
+                                    <Text size="sm" c="dimmed">Color Scheme</Text>
+                                    <ActionIcon
+                                        variant="subtle"
+                                        color="gray"
+                                        onClick={() => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')}
+                                        size="lg"
+                                    >
+                                        {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+                                    </ActionIcon>
+                                </Group>
+
+                                <Text size="sm" fw={500} mt="md" mb="xs">Accent Color</Text>
+                                <Group gap="xs">
+                                    {colors.map((c) => (
+                                        <ColorSwatch
+                                            key={c.color}
+                                            color={c.value}
+                                            onClick={() => onColorChange(c.color)}
+                                            style={{ cursor: 'pointer', color: '#fff' }}
+                                        >
+                                            {activeColor === c.color && <CheckIcon style={{ width: 12, height: 12 }} />}
+                                        </ColorSwatch>
+                                    ))}
+                                </Group>
+                            </Box>
                         </Box>
                     </Paper>
                 )}
