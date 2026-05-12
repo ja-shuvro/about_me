@@ -1,6 +1,13 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CaseStudiesSection from "@/components/sections/CaseStudiesSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Case Studies | J.A. Shuvro — Architecture & Development",
+  description: "Explore in-depth case studies on GIS platforms, modular ERP systems, and enterprise software architecture built for the Bangladesh market.",
+  keywords: ["Software Case Studies", "GIS Projects", "ERP Development Bangladesh", "System Architecture Portfolio"],
+};
 
 export default function CaseStudiesPage() {
   return (

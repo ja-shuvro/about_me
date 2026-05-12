@@ -1,6 +1,6 @@
 {
-  "/case-studies/page": "app/case-studies/page.js",
   "/page": "app/page.js",
+  "/case-studies/page": "app/case-studies/page.js",
   "/case-studies/agriflow/page": "app/case-studies/agriflow/page.js",
   "/case-studies/negmp/page": "app/case-studies/negmp/page.js"
 }
