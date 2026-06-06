@@ -1,13 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Suspense, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   ScrollControls,
   Scroll,
   Environment,
   Preload,
   Stars,
+  useScroll,
 } from "@react-three/drei";
 import {
   EffectComposer,
@@ -23,58 +24,92 @@ import HeroScene3D from "./hero-scene-3d";
 import AboutScene3D from "./about-scene-3d";
 import SkillsScene3D from "./skills-scene-3d";
 import ProjectsScene3D from "./projects-scene-3d";
+import CaseStudiesScene3D from "./case-studies-scene-3d";
 import ExperienceScene3D from "./experience-scene-3d";
 import ContactScene3D from "./contact-scene-3d";
 
-/**
- * SceneContent — all 3D objects live inside ScrollControls
- */
-const SceneContent = () => (
-  <>
-    <CameraRig />
+const SceneContent = () => {
+  const scroll = useScroll();
 
-    {/* ── Lighting ──────────────────────────────────────────────────────── */}
-    {/* Deep-space ambient — barely anything, let emissives do the work */}
-    <ambientLight intensity={0.04} color="#0a0a18" />
-    {/* Sun-like directional rim */}
-    <directionalLight
-      position={[12, 20, 10]}
-      intensity={0.18}
-      color="#c8e0ff"
-    />
+  // Seamless dark color palette per section to match the storytelling narrative
+  const bgColors = useMemo(() => [
+    new THREE.Color("#050000"), // 0: Hero (Warning Crimson / System Chaos)
+    new THREE.Color("#080515"), // 1: About (Deconstruction Violet)
+    new THREE.Color("#01090a"), // 2: Skills (Structured Logic Teal)
+    new THREE.Color("#010610"), // 3: Projects (System Blue / Client Interface)
+    new THREE.Color("#080312"), // 4: Cases (Strategic Purple)
+    new THREE.Color("#0a0008"), // 5: Experience (Optimization Rose / Speed Trails)
+    new THREE.Color("#010106"), // 6: Contact (Secure Stable Black/Cyan)
+  ], []);
 
-    {/* ── Environment ───────────────────────────────────────────────────── */}
-    {/* Night HDRI for PBR reflections on metallic surfaces */}
-    <Environment preset="night" />
+  useFrame((state) => {
+    const offset = Math.max(0, Math.min(1, scroll.offset));
+    
+    // Map offset to colors array index (0 to 6)
+    const rawVal = offset * 6;
+    const idx = Math.min(5, Math.floor(rawVal));
+    const fraction = rawVal - idx;
 
-    {/* ── Deep Space Starfield ──────────────────────────────────────────── */}
-    {/* Static background — inside the galaxy disc the ParticleField handles it */}
-    <Stars
-      radius={90}
-      depth={60}
-      count={4000}
-      factor={3.5}
-      saturation={0.4}
-      fade
-      speed={0.35}
-    />
+    const c1 = bgColors[idx];
+    const c2 = bgColors[idx + 1] || bgColors[6];
+    
+    const targetColor = new THREE.Color().lerpColors(c1, c2, fraction);
 
-    {/* ── Cinematic Fog ─────────────────────────────────────────────────── */}
-    {/* Color matches canvas background, near=15 keeps foreground clear */}
-    <fog attach="fog" args={["#01010a", 14, 42]} />
+    // Apply color to background renderer and Fog dynamically in-frame
+    state.scene.background = targetColor;
+    if (state.scene.fog) {
+      state.scene.fog.color = targetColor;
+    }
+  });
 
-    {/* ── Galaxy Particle Field ─────────────────────────────────────────── */}
-    <ParticleField />
+  return (
+    <>
+      <CameraRig />
 
-    {/* ── Section 3D Scenes ─────────────────────────────────────────────── */}
-    <HeroScene3D />
-    <AboutScene3D />
-    <SkillsScene3D />
-    <ProjectsScene3D />
-    <ExperienceScene3D />
-    <ContactScene3D />
-  </>
-);
+      {/* ── Lighting ──────────────────────────────────────────────────────── */}
+      {/* Deep-space ambient — barely anything, let emissives do the work */}
+      <ambientLight intensity={0.04} color="#0a0a18" />
+      {/* Sun-like directional rim */}
+      <directionalLight
+        position={[12, 20, 10]}
+        intensity={0.18}
+        color="#c8e0ff"
+      />
+
+      {/* ── Environment ───────────────────────────────────────────────────── */}
+      {/* Night HDRI for PBR reflections on metallic surfaces */}
+      <Environment preset="night" />
+
+      {/* ── Deep Space Starfield ──────────────────────────────────────────── */}
+      {/* Static background — inside the galaxy disc the ParticleField handles it */}
+      <Stars
+        radius={90}
+        depth={60}
+        count={4000}
+        factor={3.5}
+        saturation={0.4}
+        fade
+        speed={0.35}
+      />
+
+      {/* ── Cinematic Fog ─────────────────────────────────────────────────── */}
+      {/* Color matches canvas background, near=14 keeps foreground clear */}
+      <fog attach="fog" args={["#01010a", 14, 42]} />
+
+      {/* ── Galaxy Particle Field ─────────────────────────────────────────── */}
+      <ParticleField />
+
+      {/* ── Section 3D Scenes ─────────────────────────────────────────────── */}
+      <HeroScene3D />
+      <AboutScene3D />
+      <SkillsScene3D />
+      <ProjectsScene3D />
+      <CaseStudiesScene3D />
+      <ExperienceScene3D />
+      <ContactScene3D />
+    </>
+  );
+};
 
 /**
  * CinematicCanvas — master full-viewport WebGL stage

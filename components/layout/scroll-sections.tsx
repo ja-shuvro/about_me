@@ -221,6 +221,25 @@ const ScrollSections = () => {
     return () => ctx.revert();
   }, []);
 
+  const handleInputFocus = () => {
+    window.dispatchEvent(new CustomEvent("contact-form-focus"));
+  };
+
+  const handleInputBlur = () => {
+    window.dispatchEvent(new CustomEvent("contact-form-blur"));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent("contact-form-submit"));
+    
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("contact-form-reset"));
+      const form = e.target as HTMLFormElement;
+      if (form) form.reset();
+    }, 5500);
+  };
+
   return (
     <>
       {/* Scroll Progress Bar */}
@@ -508,9 +527,9 @@ const ScrollSections = () => {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto stagger-group">
+            <div className="flex justify-center max-w-2xl mx-auto stagger-group">
               {/* AgriflowBD */}
-              <div className="glass-card rounded-3xl p-8 md:p-10 group stagger-item hover:border-[#10b981]/30 transition-all duration-500">
+              <div className="glass-card rounded-3xl p-8 md:p-10 group stagger-item hover:border-[#10b981]/30 transition-all duration-500 w-full">
                 <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border bg-[#10b981]/10 border-[#10b981]/20 text-[#10b981]">
                   ERP · Bangladesh
                 </div>
@@ -533,35 +552,6 @@ const ScrollSections = () => {
                 <Link
                   href="/case-studies/agriflow"
                   className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest hover:text-[#10b981] transition-colors duration-300"
-                >
-                  Read Full Study <ArrowRight size={16} />
-                </Link>
-              </div>
-
-              {/* NEGMP */}
-              <div className="glass-card rounded-3xl p-8 md:p-10 group stagger-item hover:border-[#23bcfe]/30 transition-all duration-500">
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border bg-[#23bcfe]/10 border-[#23bcfe]/20 text-[#23bcfe]">
-                  GIS · Architecture Design
-                </div>
-                <h3 className="text-2xl md:text-3xl font-black font-heading mb-4 leading-tight group-hover:text-[#23bcfe] transition-colors duration-300">
-                  National Env. GIS <br />
-                  Monitoring Platform
-                </h3>
-                <p className="text-[#64748b] mb-8 leading-relaxed">
-                  A modular, satellite-integrated foundation for national-scale
-                  accountability and environmental tracking.
-                </p>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="text-xs font-bold px-3 py-1.5 rounded-xl bg-[#06060f] border border-[#1a1a2e] text-[#64748b]">
-                    GEE + PostGIS
-                  </span>
-                  <span className="text-xs font-bold px-3 py-1.5 rounded-xl bg-[#06060f] border border-[#1a1a2e] text-[#64748b]">
-                    Offline-First Design
-                  </span>
-                </div>
-                <Link
-                  href="/case-studies/negmp"
-                  className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest hover:text-[#23bcfe] transition-colors duration-300"
                 >
                   Read Full Study <ArrowRight size={16} />
                 </Link>
@@ -686,7 +676,7 @@ const ScrollSections = () => {
                 </div>
 
                 <div className="glass-strong p-8 rounded-3xl section-content">
-                  <form className="space-y-6">
+                  <form onSubmit={handleFormSubmit} className="space-y-6">
                     <div>
                       <label
                         htmlFor="contact-name"
@@ -698,7 +688,10 @@ const ScrollSections = () => {
                         type="text"
                         id="contact-name"
                         placeholder="Your Name"
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         className="w-full px-5 py-4 rounded-xl bg-[#06060f]/80 border border-[#1a1a2e] focus:border-[#23bcfe] focus:outline-none transition-colors duration-300 text-sm"
+                        required
                       />
                     </div>
                     <div>
@@ -712,7 +705,10 @@ const ScrollSections = () => {
                         type="email"
                         id="contact-email"
                         placeholder="your@email.com"
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         className="w-full px-5 py-4 rounded-xl bg-[#06060f]/80 border border-[#1a1a2e] focus:border-[#23bcfe] focus:outline-none transition-colors duration-300 text-sm"
+                        required
                       />
                     </div>
                     <div>
@@ -726,7 +722,10 @@ const ScrollSections = () => {
                         id="contact-message"
                         rows={4}
                         placeholder="Tell me about your project..."
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         className="w-full px-5 py-4 rounded-xl bg-[#06060f]/80 border border-[#1a1a2e] focus:border-[#23bcfe] focus:outline-none transition-colors duration-300 resize-none text-sm"
+                        required
                       />
                     </div>
                     <button

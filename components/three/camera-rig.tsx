@@ -110,6 +110,17 @@ const CameraRig = () => {
     targetLookAt.current.lerp(targetLook, smooth);
     currentLookAt.current.lerp(targetLookAt.current, lookSmooth);
 
+    // ── Cinematic Camera Roll (Banking on speed phases) ───────────────────
+    const speedStart = 0.75;
+    const speedEnd = 0.88;
+    let roll = 0;
+    if (offset >= speedStart && offset <= speedEnd) {
+      const normalized = (offset - speedStart) / (speedEnd - speedStart);
+      roll = Math.sin(normalized * Math.PI) * 0.18; // Peak roll roll (approx. 10 degrees)
+    }
+    const upVector = new THREE.Vector3(Math.sin(roll), Math.cos(roll), 0).normalize();
+    camera.up.copy(upVector);
+
     camera.position.copy(currentPos.current);
     camera.lookAt(currentLookAt.current);
   });

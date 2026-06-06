@@ -2,7 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useScroll, Float } from "@react-three/drei";
+import { useScroll, Float, Line } from "@react-three/drei";
 import * as THREE from "three";
 
 interface ProjectScreen {
@@ -22,95 +22,175 @@ const PROJECT_SCREENS: ProjectScreen[] = [
   { title: "Weekly Success", image: "/assets/weeklysuccess.png", position: [-6.5, -1, -3.5], rotation: [0, 0.4, 0] },
 ];
 
+const DATA_HUB_POSITION: [number, number, number] = [0, 0, -6.5];
+const PACKET_COLOR = "#23bcfe";
+
 /**
- * ProjectScreen3D — A single floating monitor screen displaying a project screenshot
+ * ProjectScreenMesh — A single floating monitor screen with an animated data link
  */
 const ProjectScreenMesh = ({ project, index }: { project: ProjectScreen; index: number }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<THREE.Group>(null);
+  const packetRef = useRef<THREE.Mesh>(null);
 
   // Load texture
   const texture = useLoader(THREE.TextureLoader, project.image);
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
+    
+    // Gentle bobbing for the screen group
     if (meshRef.current) {
-      // Gentle floating bob
-      meshRef.current.position.y = project.position[1] + Math.sin(time * 0.5 + index * 0.8) * 0.15;
+      meshRef.current.position.y = project.position[1] + Math.sin(time * 0.45 + index * 0.7) * 0.12;
+    }
+
+    // Animate data packet traveling from Hub to Screen
+    if (packetRef.current) {
+      const travelSpeed = 0.5 + (index % 3) * 0.15;
+      const t = (time * travelSpeed + (index * 0.18)) % 1.0;
+      
+      const start = DATA_HUB_POSITION;
+      // account for the mesh floating y-coordinate
+      const endY = project.position[1] + Math.sin(time * 0.45 + index * 0.7) * 0.12;
+      
+      packetRef.current.position.set(
+        THREE.MathUtils.lerp(start[0], project.position[0], t),
+        THREE.MathUtils.lerp(start[1], endY, t),
+        THREE.MathUtils.lerp(start[2], project.position[2], t)
+      );
+
+      // Pulse packet scale
+      packetRef.current.scale.setScalar(0.7 + Math.sin(time * 5 + index) * 0.3);
     }
   });
 
   return (
-    <Float speed={0.8 + index * 0.1} rotationIntensity={0.05} floatIntensity={0.2}>
-      <group position={project.position} rotation={project.rotation}>
-        {/* Screen frame */}
-        <mesh ref={meshRef}>
-          <boxGeometry args={[2, 1.3, 0.05]} />
-          <meshStandardMaterial
-            color="#0d0d1a"
-            metalness={0.9}
-            roughness={0.1}
-          />
-        </mesh>
+    <group>
+      {/* ── Glowing Data Stream Line ── */}
+      <Line
+        points={[DATA_HUB_POSITION, project.position]}
+        color="#23bcfe"
+        lineWidth={0.6}
+        transparent
+        opacity={0.25}
+      />
 
-        {/* Screen display — project screenshot */}
-        <mesh position={[0, 0, 0.03]}>
-          <planeGeometry args={[1.85, 1.15]} />
-          <meshBasicMaterial map={texture} />
-        </mesh>
+      {/* ── Traveling Data Packet (Spherical light) ── */}
+      <mesh ref={packetRef}>
+        <sphereGeometry args={[0.045, 8, 8]} />
+        <meshBasicMaterial
+          color={PACKET_COLOR}
+          transparent
+          opacity={0.8}
+        />
+      </mesh>
 
-        {/* Bottom bezel accent */}
-        <mesh position={[0, -0.7, 0.01]}>
-          <boxGeometry args={[2, 0.04, 0.06]} />
-          <meshBasicMaterial color="#23bcfe" transparent opacity={0.5} />
-        </mesh>
+      {/* ── Floating Screen Mesh ── */}
+      <Float speed={0.8 + index * 0.1} rotationIntensity={0.06} floatIntensity={0.25}>
+        <group ref={meshRef} position={[project.position[0], 0, project.position[2]]} rotation={project.rotation}>
+          {/* Bezel frame */}
+          <mesh>
+            <boxGeometry args={[2.0, 1.3, 0.05]} />
+            <meshStandardMaterial
+              color="#0c0c1b"
+              metalness={0.9}
+              roughness={0.15}
+            />
+          </mesh>
 
-        {/* Glow behind screen */}
-        <mesh ref={glowRef} position={[0, 0, -0.1]}>
-          <planeGeometry args={[2.5, 1.8]} />
-          <meshBasicMaterial
-            color="#23bcfe"
-            transparent
-            opacity={0.03}
-            depthWrite={false}
-          />
-        </mesh>
-      </group>
-    </Float>
+          {/* Screenshot Display */}
+          <mesh position={[0, 0, 0.03]}>
+            <planeGeometry args={[1.86, 1.16]} />
+            <meshBasicMaterial map={texture} />
+          </mesh>
+
+          {/* Glowing blue accent bar on bottom edge */}
+          <mesh position={[0, -0.68, 0.015]}>
+            <boxGeometry args={[2.0, 0.03, 0.05]} />
+            <meshBasicMaterial color="#23bcfe" transparent opacity={0.65} />
+          </mesh>
+
+          {/* Halo Glow behind screen */}
+          <mesh position={[0, 0, -0.06]}>
+            <planeGeometry args={[2.4, 1.7]} />
+            <meshBasicMaterial
+              color="#23bcfe"
+              transparent
+              opacity={0.03}
+              depthWrite={false}
+            />
+          </mesh>
+        </group>
+      </Float>
+    </group>
   );
 };
 
 /**
- * ProjectsScene3D — Array of floating monitor screens showing project screenshots
- * Position: offset left
+ * ProjectsScene3D — Core project layout with background data hub
  */
 const ProjectsScene3D = () => {
   const groupRef = useRef<THREE.Group>(null);
+  const hubTrackRef = useRef<THREE.Mesh>(null);
   const scroll = useScroll();
 
-  useFrame(() => {
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
     const scrollOffset = scroll.offset;
 
     if (groupRef.current) {
-      // Visible in section 3 (projects)
-      const sectionStart = 3 / 7;
-      const sectionEnd = 4 / 7;
-      const progress = (scrollOffset - sectionStart) / (sectionEnd - sectionStart);
-      const visibility = Math.max(0, Math.min(1, progress < 0.5 ? progress * 2 : 2 - progress * 2));
+      // Visible in section 3 (projects, scroll range ~0.42 to 0.58)
+      const sectionStart = 0.42;
+      const sectionEnd = 0.58;
+      
+      let visibility = 0;
+      if (scrollOffset >= sectionStart && scrollOffset <= sectionEnd) {
+        const progress = (scrollOffset - sectionStart) / (sectionEnd - sectionStart);
+        visibility = progress < 0.2 
+          ? progress * 5                  // Fade in quickly
+          : progress > 0.8 
+            ? (1 - progress) * 5         // Fade out quickly at end
+            : 1;                          // Stay visible in the middle
+      } else if (scrollOffset > sectionEnd) {
+        visibility = 0;
+      }
 
       groupRef.current.scale.setScalar(visibility);
+    }
+
+    if (hubTrackRef.current) {
+      hubTrackRef.current.rotation.z = time * 0.6;
     }
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={0}>
+      {/* ── Core Background Data Server/Hub ── */}
+      <mesh position={DATA_HUB_POSITION}>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshStandardMaterial
+          color="#23bcfe"
+          emissive="#23bcfe"
+          emissiveIntensity={2.5}
+          metalness={0.9}
+          roughness={0.1}
+        />
+      </mesh>
+      
+      {/* Circular server data tracks */}
+      <mesh ref={hubTrackRef} position={DATA_HUB_POSITION} rotation={[Math.PI / 4, 0, 0]}>
+        <torusGeometry args={[0.55, 0.008, 8, 40]} />
+        <meshBasicMaterial color="#23bcfe" transparent opacity={0.4} />
+      </mesh>
+
+      {/* Render screens */}
       {PROJECT_SCREENS.map((project, index) => (
         <ProjectScreenMesh key={project.title} project={project} index={index} />
       ))}
 
-      {/* Accent lighting for project gallery */}
-      <pointLight position={[-5, 2, 0]} color="#23bcfe" intensity={3} distance={12} />
-      <pointLight position={[-4, -2, -1]} color="#7c3aed" intensity={2} distance={10} />
+      {/* Lighting for projects gallery */}
+      <pointLight position={[-5, 2.5, -2]} color="#23bcfe" intensity={4} distance={12} />
+      <pointLight position={[-4, -2.5, -2]} color="#7c3aed" intensity={3} distance={10} />
+      <pointLight position={DATA_HUB_POSITION} color="#23bcfe" intensity={3} distance={10} />
     </group>
   );
 };
