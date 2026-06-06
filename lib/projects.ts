@@ -15,7 +15,7 @@ export const projects: Project[] = [
     category: "Mobile App",
     description: "A professional analytics platform for social interactions with real-time chat capabilities.",
     tech: ["Flutter", "Riverpod", "Firebase", "Real-time Chat"],
-    image: "/projects/flirtmetrics.jpg",
+    image: "/assets/flirtmetrics.png",
     link: "#"
   },
   {
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     category: "Web App",
     description: "A comprehensive trading platform for prop traders with detailed performance metrics.",
     tech: ["Next.js", "Node.js", "MongoDB", "Charts.js"],
-    image: "/projects/smart-prop.jpg",
+    image: "/assets/smartproptrader.png",
     link: "#"
   },
   {
@@ -33,7 +33,7 @@ export const projects: Project[] = [
     category: "Web Platform",
     description: "An educational management system designed for school-student collaboration.",
     tech: ["React", "Express.js", "MySQL", "Prisma"],
-    image: "/projects/student-square.jpg",
+    image: "/assets/studentsquare.png",
     link: "#"
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     category: "Web App",
     description: "A real estate marketplace for property rentals and sales across Bangladesh.",
     tech: ["React", "Node.js", "MySQL", "Tailwind"],
-    image: "/projects/rent-sale.jpg",
+    image: "/assets/rentsalebd.png",
     link: "#"
   },
   {
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     category: "WordPress",
     description: "High-end real estate agency website with custom property listings.",
     tech: ["WordPress", "Elementor", "Astra"],
-    image: "/projects/mcneil.jpg",
+    image: "/assets/mcneilpstateplanning.png",
     link: "#"
   },
   {
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     category: "Blog",
     description: "A minimalist blog platform focused on personal growth and productivity.",
     tech: ["WordPress", "Elementor", "SEO"],
-    image: "/projects/weekly-success.jpg",
+    image: "/assets/weeklysuccess.png",
     link: "#"
   },
   {
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     category: "Web App",
     description: "A food delivery service platform for the local Rajshahi market.",
     tech: ["HTML5", "Tailwind CSS", "JavaScript"],
-    image: "/projects/foodshahi.jpg",
+    image: "/assets/foodshahibd.png",
     link: "#"
   }
 ];

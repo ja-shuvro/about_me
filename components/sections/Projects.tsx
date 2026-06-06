@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { projects } from "@/lib/projects";
+import Image from "next/image";
 
 const Projects = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
@@ -60,12 +61,12 @@ const Projects = () => {
                   className="h-full rounded-3xl bg-surface border border-border overflow-hidden group hover:border-accent/30 transition-all flex flex-col"
                 >
                   <div className="aspect-video bg-background relative overflow-hidden">
-                    {/* Image Placeholder with Gradient if image doesn't exist */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent2/20 flex items-center justify-center">
-                       <span className="text-accent/20 font-black text-4xl">{project.title[0]}</span>
-                    </div>
-                    {/* Actual Image would go here: <Image src={project.image} alt={project.title} fill /> */}
-                    
+                    <Image 
+                      src={project.image} 
+                      alt={project.title} 
+                      fill 
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
                     <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                       <a 
                         href={project.link}

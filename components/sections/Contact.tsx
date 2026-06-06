@@ -1,12 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, MapPin, Briefcase, Send } from "lucide-react";
+import { Mail, MapPin, Briefcase, Send, MessageCircle } from "lucide-react";
 
 const info = [
-  { icon: <Mail className="text-accent" />, label: "Email", value: "shuvro.dev@gmail.com" },
+  { icon: <Mail className="text-accent" />, label: "Email", value: "dev.jashuvro@gmail.com", link: "mailto:dev.jashuvro@gmail.com" },
+  { 
+    icon: <MessageCircle className="text-green-500" />, 
+    label: "WhatsApp", 
+    value: "+880 1516-577736", 
+    link: "https://wa.me/8801516577736?text=Hi%20Shuvro!%20I%20saw%20your%20portfolio%20and%20wanted%20to%20connect." 
+  },
   { icon: <MapPin className="text-accent2" />, label: "Location", value: "Rajshahi, Bangladesh" },
-  { icon: <Briefcase className="text-green-400" />, label: "Status", value: "Available for Freelance" },
+  { icon: <Briefcase className="text-blue-400" />, label: "Status", value: "Available for Freelance" },
 ];
 
 const Contact = () => {
@@ -29,21 +35,39 @@ const Contact = () => {
               viewport={{ once: true }}
             >
               <div className="space-y-8">
-                {info.map((item, index) => (
-                  <div key={index} className="flex gap-6 items-center p-6 rounded-2xl bg-surface border border-border group hover:border-accent/30 transition-all">
-                    <div className="p-4 rounded-xl bg-background text-accent group-hover:scale-110 transition-transform">
-                      {item.icon}
+                {info.map((item, index) => {
+                  const content = (
+                    <>
+                      <div className="p-4 rounded-xl bg-background text-accent group-hover:scale-110 transition-transform">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-muted block mb-1">
+                          {item.label}
+                        </span>
+                        <span className="text-lg font-bold text-text">
+                          {item.value}
+                        </span>
+                      </div>
+                    </>
+                  );
+
+                  return item.link ? (
+                    <a 
+                      key={index} 
+                      href={item.link}
+                      target={item.link.startsWith('http') ? "_blank" : undefined}
+                      rel={item.link.startsWith('http') ? "noopener noreferrer" : undefined}
+                      className="flex gap-6 items-center p-6 rounded-2xl bg-surface border border-border group hover:border-accent/30 transition-all cursor-pointer"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={index} className="flex gap-6 items-center p-6 rounded-2xl bg-surface border border-border group hover:border-accent/30 transition-all">
+                      {content}
                     </div>
-                    <div>
-                      <span className="text-xs font-bold uppercase tracking-widest text-muted block mb-1">
-                        {item.label}
-                      </span>
-                      <span className="text-lg font-bold text-text">
-                        {item.value}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
 

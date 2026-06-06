@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components\\\\sections\\\\Hero.tsx -> ../three/HeroScene\":{\"id\":\"components\\\\sections\\\\Hero.tsx -> ../three/HeroScene\",\"files\":[\"static/chunks/_app-pages-browser_components_three_HeroScene_tsx.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"
