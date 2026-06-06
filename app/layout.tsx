@@ -1,61 +1,47 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import dynamic from "next/dynamic";
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: 'swap',
-});
+// Font — only used for body text; heading font is loaded via @font-face in CSS
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
+// Dynamic import so cursor never SSR-s (it's client-only DOM)
+const CinematicCursor = dynamic(() => import("@/components/CinematicCursor"), {
+  ssr: false,
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jashuvro.dev'),
-  title: {
-    default: 'J.A. Shuvro — Flutter & Full-Stack Developer',
-    template: '%s | J.A. Shuvro',
-  },
-  description: 'Experienced Flutter & Full-Stack Developer from Rajshahi, Bangladesh. Building mobile and web apps with Flutter, NestJS, Next.js, Laravel, and PostgreSQL.',
-  keywords: ['Flutter Developer', 'Full-Stack Developer', 'Next.js Developer', 'Bangladesh Developer', 'Freelance Developer', 'NestJS', 'React Developer'],
-  authors: [{ name: 'J.A. Shuvro' }],
-  creator: 'J.A. Shuvro',
+  title: "J.A. Shuvro — Flutter & Full-Stack Developer",
+  description:
+    "Portfolio of J.A. Shuvro — Flutter & Full-Stack Engineer from Rajshahi, Bangladesh. " +
+    "Specializing in NestJS, Next.js, Laravel, PostgreSQL, and mobile architecture.",
+  metadataBase: new URL("https://jashuvro.com"),
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://jashuvro.dev',
-    siteName: 'J.A. Shuvro Portfolio',
-    title: 'J.A. Shuvro — Flutter & Full-Stack Developer',
-    description: 'Experienced Flutter & Full-Stack Developer from Rajshahi, Bangladesh.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    title: "J.A. Shuvro — Flutter & Full-Stack Developer",
+    description:
+      "Architecture-forward engineer building scalable systems from mobile to ERP.",
+    url: "https://jashuvro.com",
+    siteName: "J.A. Shuvro Portfolio",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'J.A. Shuvro — Flutter & Full-Stack Developer',
-    description: 'Experienced Flutter & Full-Stack Developer from Rajshahi, Bangladesh.',
-    images: ['/og-image.png'],
-  },
-  robots: { index: true, follow: true },
-  alternates: { canonical: 'https://jashuvro.dev' },
-  icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    card: "summary_large_image",
+    title: "J.A. Shuvro — Flutter & Full-Stack Developer",
+    description: "Portfolio of J.A. Shuvro — Full-Stack & Mobile Engineer.",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-body bg-background text-text antialiased`}>
+    <html lang="en">
+      <body className={inter.variable}>
+        {/* Cinematic cursor — glowing dot + ring, hidden on touch */}
+        <CinematicCursor />
         {children}
       </body>
     </html>

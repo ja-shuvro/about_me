@@ -2,46 +2,535 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   CSS Custom Properties — Design System Tokens
+   ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-  --background: #06060f;
+  --background: #01010a;
   --foreground: #e2e8f0;
+  --accent: #23bcfe;
+  --accent2: #7c3aed;
+  --surface: #0a0a18;
+  --border: #14142a;
+
+  /* Glow colors (used in box-shadow / text-shadow) */
+  --glow-cyan:   rgba(35, 188, 254, 0.45);
+  --glow-purple: rgba(124, 58, 237, 0.45);
+  --glow-amber:  rgba(245, 158, 11, 0.35);
+
+  /* Animation timing */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base Reset
+   ═══════════════════════════════════════════════════════════════════════════ */
 @layer base {
+  html {
+    scroll-behavior: auto; /* GSAP handles smooth scroll */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     @apply bg-background text-text;
+    overflow-x: hidden;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  ::selection {
+    background: rgba(35, 188, 254, 0.25);
+    color: #ffffff;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ═══════════════════════════════════════════════════════════════════════════
+   🎬  FILM GRAIN OVERLAY — The "alive" effect
+   Animated SVG noise texture that shifts position every frame.
+   z-index: 9000 so it sits OVER the canvas but under the UI (z-10).
+   ═══════════════════════════════════════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -30%;            /* oversized so edge shift doesn't expose background */
+  width: 160%;
+  height: 160%;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  animation: grain 0.12s steps(1) infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
+@keyframes grain {
+  0%  { transform: translate(0%,    0%  ) }
+  10% { transform: translate(-6%,  -11% ) }
+  20% { transform: translate(-16%,  5%  ) }
+  30% { transform: translate( 8%,  -26% ) }
+  40% { transform: translate(-4%,   26% ) }
+  50% { transform: translate(-17%,  11% ) }
+  60% { transform: translate(16%,   0%  ) }
+  70% { transform: translate( 0%,   16% ) }
+  80% { transform: translate( 4%,   36% ) }
+  90% { transform: translate(-11%,  11% ) }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   🖱️  CUSTOM CURSOR — Glowing dot + ring
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s var(--ease-cinematic),
+              height 0.2s var(--ease-cinematic),
+              opacity 0.2s ease;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 10px var(--glow-cyan), 0 0 20px var(--glow-cyan);
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(35, 188, 254, 0.38);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s var(--ease-cinematic),
+              height 0.35s var(--ease-cinematic),
+              border-color 0.35s ease,
+              opacity 0.35s ease;
+}
+
+a:hover ~ .cursor-dot,
+button:hover ~ .cursor-dot {
+  width: 12px;
+  height: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Custom Scrollbar — Thin cinematic
+   ═══════════════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar       { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #1a1a2e;
+  background: rgba(35, 188, 254, 0.25);
   border-radius: 10px;
 }
+::-webkit-scrollbar-thumb:hover { background: rgba(35, 188, 254, 0.65); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #23bcfe;
-}
-
-/* Smooth Transitions */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Glassmorphism utility */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Glassmorphism System
+   ═══════════════════════════════════════════════════════════════════════════ */
 .glass {
-  background: rgba(13, 13, 26, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(26, 26, 46, 0.5);
+  background: rgba(10, 10, 24, 0.68);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(20, 20, 42, 0.6);
+}
+
+.glass-strong {
+  background: rgba(1, 1, 10, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(35, 188, 254, 0.12);
+}
+
+.glass-card {
+  background: rgba(10, 10, 24, 0.48);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(20, 20, 42, 0.65);
+  transition: border-color 0.45s ease,
+              box-shadow   0.45s ease,
+              transform    0.45s var(--ease-cinematic);
+}
+
+.glass-card:hover {
+  border-color: rgba(35, 188, 254, 0.32);
+  box-shadow: 0 0 50px rgba(35, 188, 254, 0.06),
+              0 20px 40px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Cinematic Typography
+   ═══════════════════════════════════════════════════════════════════════════ */
+.text-glow {
+  text-shadow:
+    0 0 20px rgba(35, 188, 254, 0.35),
+    0 0 60px rgba(35, 188, 254, 0.12);
+}
+
+.text-glow-purple {
+  text-shadow:
+    0 0 20px rgba(124, 58, 237, 0.35),
+    0 0 60px rgba(124, 58, 237, 0.12);
+}
+
+.text-glow-strong {
+  text-shadow:
+    0 0 10px rgba(35, 188, 254, 0.6),
+    0 0 40px rgba(35, 188, 254, 0.25),
+    0 0 80px rgba(35, 188, 254, 0.1);
+}
+
+/* Fluid heading size */
+.cinematic-title {
+  font-size: clamp(2.6rem, 8.5vw, 7.5rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: 900;
+}
+
+.cinematic-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  line-height: 1.65;
+  font-weight: 300;
+  opacity: 0.68;
+}
+
+.section-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* Glitch text effect — used on special callouts */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.glitch:hover::before {
+  opacity: 0.6;
+  animation: glitch-top 0.35s steps(1) forwards;
+  color: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+  transform: translateX(-2px);
+}
+.glitch:hover::after {
+  opacity: 0.6;
+  animation: glitch-bot 0.35s steps(1) forwards;
+  color: var(--accent2);
+  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  transform: translateX(2px);
+}
+@keyframes glitch-top {
+  0%,100% { opacity: 0 }
+  20%,60% { opacity: 0.6; transform: translateX(-3px) }
+  40%,80% { opacity: 0.3; transform: translateX(2px) }
+}
+@keyframes glitch-bot {
+  0%,100% { opacity: 0 }
+  20%,60% { opacity: 0.6; transform: translateX(3px) }
+  40%,80% { opacity: 0.3; transform: translateX(-2px) }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Scroll Progress Bar
+   ═══════════════════════════════════════════════════════════════════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg,
+    var(--accent) 0%,
+    var(--accent2) 50%,
+    var(--accent) 100%);
+  background-size: 200% 100%;
+  animation: progress-shimmer 3s linear infinite;
+  z-index: 9999;
+  transform-origin: left;
+  pointer-events: none;
+}
+
+@keyframes progress-shimmer {
+  0%   { background-position: 0% 0% }
+  100% { background-position: 200% 0% }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Canvas Container & Layout
+   ═══════════════════════════════════════════════════════════════════════════ */
+.canvas-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+.scroll-overlay {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.scroll-overlay > * {
+  pointer-events: auto;
+}
+
+.scroll-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Cinematic Buttons
+   ═══════════════════════════════════════════════════════════════════════════ */
+.btn-cinematic {
+  position: relative;
+  padding: 1rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all 0.45s var(--ease-cinematic);
+  isolation: isolate;
+}
+
+/* Shine sweep on hover */
+.btn-cinematic::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease-cinematic);
+}
+.btn-cinematic:hover::after {
+  left: 130%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #01010a;
+  box-shadow:
+    0 0 30px rgba(35, 188, 254, 0.35),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.btn-primary:hover {
+  box-shadow:
+    0 0 55px rgba(35, 188, 254, 0.6),
+    0 8px 30px rgba(0, 0, 0, 0.5);
+  transform: scale(1.055) translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(35, 188, 254, 0.32);
+  color: #e2e8f0;
+}
+.btn-outline:hover {
+  border-color: rgba(35, 188, 254, 0.85);
+  box-shadow: 0 0 30px rgba(35, 188, 254, 0.12);
+  transform: scale(1.055) translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Ambient Glow Orbs
+   ═══════════════════════════════════════════════════════════════════════════ */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(130px);
+  pointer-events: none;
+  opacity: 0.35;
+}
+.glow-orb-cyan   { background: radial-gradient(circle, rgba(35,188,254,0.18), transparent 70%); }
+.glow-orb-purple { background: radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%); }
+.glow-orb-amber  { background: radial-gradient(circle, rgba(245,158,11,0.15), transparent 70%); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Shimmer Loading State
+   ═══════════════════════════════════════════════════════════════════════════ */
+.shimmer {
+  background: linear-gradient(90deg,
+    rgba(20,20,42,0.4) 25%,
+    rgba(35,188,254,0.06) 50%,
+    rgba(20,20,42,0.4) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0% }
+  100% { background-position: -200% 0% }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Keyframe Animations
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Float — used on cards and decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px)   }
+  50%       { transform: translateY(-10px) }
+}
+
+/* Pulse glow — avatar ring */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(35,188,254,0.2), 0 0 40px rgba(35,188,254,0.08) }
+  50%       { box-shadow: 0 0 40px rgba(35,188,254,0.45), 0 0 80px rgba(35,188,254,0.15) }
+}
+
+/* Gradient shift — headline gradients */
+@keyframes gradient-shift {
+  0%   { background-position: 0%   50% }
+  50%  { background-position: 100% 50% }
+  100% { background-position: 0%   50% }
+}
+
+/* Ping dot on availability badge */
+@keyframes ping-slow {
+  0%   { transform: scale(1);    opacity: 0.75 }
+  75%,100% { transform: scale(2); opacity: 0    }
+}
+
+/* Reveal up — for section entrance (used by GSAP too) */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(50px); filter: blur(8px)  }
+  to   { opacity: 1; transform: translateY(0px);  filter: blur(0px)  }
+}
+
+/* Scan line sweep — decorative on hover elements */
+@keyframes scan {
+  0%   { transform: translateY(-100%) }
+  100% { transform: translateY(100%)  }
+}
+
+.animate-float       { animation: float 7s ease-in-out infinite }
+.animate-pulse-glow  { animation: pulse-glow 3.5s ease-in-out infinite }
+.animate-gradient    { background-size: 200% 200%; animation: gradient-shift 9s ease infinite }
+.animate-reveal      { animation: reveal-up 0.8s var(--ease-cinematic) both }
+.animate-ping-slow   { animation: ping-slow 2.5s cubic-bezier(0,0,0.2,1) infinite }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Scan Line Hover — adds a light sweep across cards / monitors
+   Usage: add .scan-on-hover to any card element
+   ═══════════════════════════════════════════════════════════════════════════ */
+.scan-on-hover {
+  position: relative;
+  overflow: hidden;
+}
+.scan-on-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(35, 188, 254, 0.5),
+    transparent);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.3s ease;
+}
+.scan-on-hover:hover::after {
+  opacity: 1;
+  animation: scan 1.2s ease-in-out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Grid Line Background Pattern
+   ═══════════════════════════════════════════════════════════════════════════ */
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(20, 20, 42, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 20, 42, 0.28) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Counter Number — large stat display
+   ═══════════════════════════════════════════════════════════════════════════ */
+.counter-number {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Skill Tag — tech badge
+   ═══════════════════════════════════════════════════════════════════════════ */
+.skill-tag {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.35s ease,
+    box-shadow   0.35s ease,
+    transform    0.35s var(--ease-spring);
+}
+.skill-tag:hover {
+  border-color: rgba(35, 188, 254, 0.5);
+  box-shadow: 0 0 20px rgba(35, 188, 254, 0.1);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Timeline — vertical line + node
+   ═══════════════════════════════════════════════════════════════════════════ */
+.timeline-node {
+  box-shadow: 0 0 0 4px rgba(35, 188, 254, 0.12), 0 0 20px rgba(35, 188, 254, 0.5);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mobile Optimizations
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .cinematic-title  { font-size: clamp(2rem, 11vw, 3.8rem) }
+  .scroll-section   { min-height: 100svh; padding: 2rem 1rem }
+
+  /* Disable grain on mobile — saves GPU */
+  body::before      { display: none }
+
+  /* Disable custom cursor on touch devices */
+  .cursor-dot,
+  .cursor-ring      { display: none }
+  *, *::before, *::after { cursor: auto !important }
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body::before           { animation: none }
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-gradient,
+  .animate-reveal        { animation: none }
+  .scroll-progress       { animation: none }
 }

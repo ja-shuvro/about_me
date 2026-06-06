@@ -4,12 +4,12 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 
-const HeroScene = dynamic(() => import("../three/HeroScene"), { ssr: false });
+// const HeroScene = dynamic(() => import("../three/HeroScene"), { ssr: false });
 
 const Hero = () => {
   return (
     <section id="home" className="relative min-height-[100vh] flex items-center justify-center pt-20 overflow-hidden">
-      <HeroScene />
+      {/* <HeroScene /> */}
       
       {/* JSON-LD Structured Data */}
       <script 
